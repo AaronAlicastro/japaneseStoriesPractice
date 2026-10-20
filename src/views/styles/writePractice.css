@@ -1,0 +1,32 @@
+.writePracticeContainer h1 {
+    padding: 20px 0;
+}
+
+.kanjiPracticeArea {
+    flex-grow: 1;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0 40px;
+}
+
+.floatWordRegister {
+    width: 100dvw;
+    height: 100dvh;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: #f9f9f9;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.floatWordRegister textarea {
+    width: 500px;
+    height: 300px;
+    margin: 20px 0;
+    padding: 10px;
+}

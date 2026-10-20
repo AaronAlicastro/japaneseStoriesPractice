@@ -1,0 +1,65 @@
+.StoriesHandlerContainer {
+    display: flex;
+}
+
+.asidePanel {
+    height: 100dvh;
+}
+
+.asidePanel:nth-child(1) {
+    flex-grow: 1;
+}
+
+.asidePanel:nth-child(2) {
+    width: 420px;
+}
+
+.asidePanel p {
+    text-align: center;
+}
+
+.asidePanel input {
+    height: 20px;
+    width: 80%;
+    padding: 0 5px;
+    outline: none;
+}
+
+.storyCreatorContainer {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    column-gap: 20px;
+}
+
+.asidePanel label {
+    width: 42%;
+}
+
+.asidePanel label textarea {
+    width: 100%;
+    height: 300px;
+    padding: 5px;
+}
+
+.flex_storiesContainer {
+    max-height: 500px;
+    overflow-y: auto;
+    box-sizing: border-box;
+    padding: 0 20px;
+}
+
+.storyCard {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 10px 0;
+}
+
+.storyCard textarea {
+    height: fit-content;
+    width: 80%;
+    align-self: center;
+    field-sizing: content;
+}

@@ -1,0 +1,14 @@
+.kanjiWriterContainer {
+    position: relative;
+    border: 1px solid #000;
+}
+
+.kanjiWriterContainer::before {
+    content: "+";
+    font-size: 16rem;
+    color: #ededed;
+    position: absolute;
+    left: calc(50% - 73px);
+    top: calc(50% - 148px);
+    z-index: -1;
+}

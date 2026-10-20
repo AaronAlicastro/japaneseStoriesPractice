@@ -1,0 +1,54 @@
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  background: #f9f9f9;
+}
+
+@keyframes moveAround {
+  from {
+    transform: rotate(0);
+  }
+
+  to {
+    transform: rotate(90deg);
+  }
+}
+
+.loadingContainer::before {
+  content: "";
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  background: #f00;
+  border-radius: 8px;
+  top: calc(50% - 20px);
+  left: calc(50% - 20px);
+  animation: moveAround 2.3s infinite;
+}
+
+.panel {
+  height: 100dvh;
+  width: 100dvw;
+}
+
+.flex_column {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  row-gap: 10px;
+}
+
+.flex_row {
+  display: flex;
+  column-gap: 10px;
+}
+
+textarea {
+  resize: none;
+  outline: none;
+}

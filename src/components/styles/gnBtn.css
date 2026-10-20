@@ -1,0 +1,8 @@
+.gnBtn {
+  padding: 5px 10px;
+  border: 1px solid #f00;
+  border-radius: 8px;
+  background: none;
+  outline: none;
+  cursor: pointer;
+}

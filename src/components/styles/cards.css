@@ -1,0 +1,27 @@
+.card_container {
+    height: 300px;
+    width: 14em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 10px;
+    border-radius: 16px;
+    box-shadow: 7px 7px 20px #efefef, -7px -7px 20px #f5f4f4;
+    background-color: #fff;
+    cursor: pointer;
+    margin: 20px 0;
+    padding-top: 20px;
+}
+
+.card_container h5 {
+    margin: 0px;
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+.card_container textarea {
+    resize: none;
+    height: 100%;
+    border: none;
+    outline: none;
+}
