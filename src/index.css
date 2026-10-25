@@ -52,3 +52,8 @@ textarea {
   resize: none;
   outline: none;
 }
+
+input {
+  outline: none;
+  padding: 5px;
+}

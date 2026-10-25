@@ -21,6 +21,9 @@ export default class DataBase {
         keyPath: "id",
         autoIncrement: true,
       });
+      initDB.createObjectStore("kanjiLearned", {
+        keyPath: "char",
+      });
       const wordStore = initDB.createObjectStore("words", {
         keyPath: "word",
       });
@@ -48,6 +51,12 @@ export default class DataBase {
       storyID: json.storyID,
       word: json.word,
       note: json.note,
+    };
+  }
+  kanjiLearnedSchema(json) {
+    return {
+      char: json.char,
+      strokes: json.strokes || [],
     };
   }
 
@@ -134,8 +143,6 @@ export default class DataBase {
         kajisWrited,
       );
 
-      console.log(kanji, noFound);
-
       if (!noFound) {
         currendWordWrited = currendWordWrited + kanji;
         kajisWrited = kajisWrited + kanji;
@@ -152,8 +159,28 @@ export default class DataBase {
     };
   }
 
+  // kanjiLearned
+  recordKanjiLearned(kanji, callback) {
+    // const save = this;
+    const kanjiJson = this.kanjiLearnedSchema(kanji);
+    const kanjiTrans = dbCreated.transaction(["kanjiLearned"], "readwrite");
+    const kanjiStore = kanjiTrans.objectStore("kanjiLearned");
+    kanjiStore.add(kanjiJson).onsuccess = () => callback();
+  }
+
+  findKanjiLearned(kanji, callback) {
+    const save = this;
+    const kanjiTrans = dbCreated.transaction(["kanjiLearned"], "readonly");
+    const kanjiStore = kanjiTrans.objectStore("kanjiLearned");
+    kanjiStore.get(kanji).onsuccess = (e) => {
+      save.db_kanjiHasBeenSearched = true;
+      save.kanjiLearnedFound = e.target.result;
+      callback(e.target.result ? true : false);
+    };
+  }
+
   // words
-  recordWord(word, callback) {
+  recordWord(word, callback = () => {}) {
     // const save = this;
     const wordJson = this.wordSchema(word);
     const wordTransaction = dbCreated.transaction(["words"], "readwrite");

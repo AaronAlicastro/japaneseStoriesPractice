@@ -1,16 +1,20 @@
 import { useRef, useState } from "react";
-import KanjiWriter from "../components/KanjiWriter";
 import "./styles/writePractice.css";
 import GnBtn from "../components/GnBtn";
+import CanvaWriter from "../components/CanvaWriter";
 
 let blockSentenceCursor = null;
 let cursor = null;
 
 export default function WritePractice({ change, dataBase }) {
-  const [fisrtBlock, setFirstBlock] = useState(true);
+  const [firstBlock, setFirstBlock] = useState(true);
+  const reLoadComponent = () => {
+    setFirstBlock(firstBlock === false ? null : false);
+  };
   const messageRef = useRef(null);
   const newWordNotaRef = useRef(null);
-  if (fisrtBlock) {
+
+  if (firstBlock) {
     blockSentenceCursor = dataBase.createBlockSentence();
     cursor = blockSentenceCursor();
   }
@@ -21,9 +25,8 @@ export default function WritePractice({ change, dataBase }) {
     const reset = () => setFirstBlock(true);
 
     if (newCursor) {
-      console.log(cursor == newCursor);
       cursor = newCursor;
-      setFirstBlock(fisrtBlock === false ? null : false);
+      reLoadComponent();
       return;
     }
 
@@ -31,6 +34,9 @@ export default function WritePractice({ change, dataBase }) {
   };
 
   const hasBeenComplete = () => {
+    dataBase.db_kanjiHasBeenSearched = false;
+    dataBase.kanjiLearnedFound = null;
+
     let message = `Increíble ¡! <br /> <br /> <br />`;
     const button = document.createElement("button");
     button.setAttribute("class", "gnBtn");
@@ -66,15 +72,63 @@ export default function WritePractice({ change, dataBase }) {
 
       newWordNotaRef.current.value = "";
       document.querySelector(".floatWordRegister").style.display = "none";
-      dataBase.recordWord(word, () => console.log("word registered"));
+      dataBase.recordWord(word);
     }
+  };
+
+  const registerKanjiLearned = (strokes, animate) => {
+    if (strokes.length) {
+      const kanjiLearned = {
+        char: cursor.kanji,
+        strokes,
+      };
+
+      dataBase.recordKanjiLearned(kanjiLearned, () => {
+        animate(() => hasBeenComplete());
+      });
+    }
+  };
+
+  const lineKanjiWrited = (lines, animate) => {
+    if (dataBase.kanjiLearnedFound) {
+      if (lines === dataBase.kanjiLearnedFound.strokes.length) {
+        animate(() => hasBeenComplete());
+      }
+    }
+  };
+
+  const renderCanvas = () => {
+    if (!dataBase.db_kanjiHasBeenSearched) {
+      dataBase.findKanjiLearned(cursor.kanji, (found) => {
+        if (!found) {
+          messageRef.current.innerHTML = "Este kanji no está registrado";
+        }
+        setTimeout(reLoadComponent, 1000);
+      });
+      return <p>Busacando Kanji...</p>;
+    }
+
+    return (
+      <CanvaWriter
+        kanji={cursor.kanji}
+        db_strokes={
+          dataBase.kanjiLearnedFound ? dataBase.kanjiLearnedFound.strokes : []
+        }
+        linesHandler={lineKanjiWrited}
+        strokesHandler={registerKanjiLearned}
+        closeCanvas={() => {
+          dataBase.db_kanjiHasBeenSearched = false;
+          dataBase.kanjiLearnedFound = null;
+        }}
+      />
+    );
   };
 
   return (
     <div className="writePracticeContainer panel flex_column">
       <h1> {cursor.text} </h1>
       <div className="kanjiPracticeArea">
-        <KanjiWriter kanji={cursor.kanji} complete={hasBeenComplete} />
+        {renderCanvas()}
 
         <div>
           <p ref={messageRef}>

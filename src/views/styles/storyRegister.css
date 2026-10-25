@@ -1,0 +1,20 @@
+.storyRegisterContainer input {
+    width: 400px;
+}
+
+.storyCreatorContainer {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    column-gap: 20px;
+}
+
+.storyCreatorContainer label {
+    width: 100%;
+}
+
+.storyCreatorContainer textarea {
+    width: 85%;
+    height: 300px;
+    padding: 5px;
+}

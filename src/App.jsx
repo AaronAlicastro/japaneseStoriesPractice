@@ -4,6 +4,7 @@ import Init from "./views/Init";
 import StoriesHandler from "./views/StoriesHandler";
 import DataBase from "./dataBase";
 import WritePractice from "./views/WritePractice";
+import StoryRegister from "./views/StoryRegister";
 
 class App extends Component {
   constructor(props) {
@@ -16,6 +17,13 @@ class App extends Component {
       loading: () => <Loading />,
       init: () => (
         <Init
+          change={(w, fun) => this.putViewCarga(w, fun)}
+          dataBase={this.dataBase}
+        />
+      ),
+
+      storyRegister: () => (
+        <StoryRegister
           change={(w, fun) => this.putViewCarga(w, fun)}
           dataBase={this.dataBase}
         />

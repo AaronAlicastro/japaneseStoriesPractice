@@ -7,25 +7,15 @@ export default function Init({ change, dataBase }) {
     });
   };
 
-  const analizeStory = () => {
-    // change(false, (goTo) => {
-    //   dataBase.getAllStories(() => goTo("storiesHandler"));
-    // })
-  };
+  const renderRegister = () => change("storyRegister");
 
   return (
     <div className="initContainer panel flex_column">
-      <p style={{ width: "300px" }}>
-        Practicar escritura es tratar de escribir algo con las palabras ya
-        aprendidas y registradas
-      </p>
-      <GnBtn click={analizeStory}>Practicar escritura</GnBtn>
-
-      <p style={{ width: "300px" }}>
-        Al darle a historias, podrás repasar las que tienes registradas y
-        también registrar alguna
-      </p>
+      <p>Practica las historias o estudios que hayas registrado ¡!</p>
       <GnBtn click={renderStories}>Historias</GnBtn>
+
+      <p>Comienza registrando tu ruta a la iluminación</p>
+      <GnBtn click={renderRegister}>Registrar</GnBtn>
     </div>
   );
 }
