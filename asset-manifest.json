@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/japaneseStoriesPractice/static/css/main.88280990.css",
+    "main.js": "/japaneseStoriesPractice/static/js/main.a737ab2d.js",
+    "index.html": "/japaneseStoriesPractice/index.html",
+    "main.88280990.css.map": "/japaneseStoriesPractice/static/css/main.88280990.css.map",
+    "main.a737ab2d.js.map": "/japaneseStoriesPractice/static/js/main.a737ab2d.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.88280990.css",
+    "static/js/main.a737ab2d.js"
+  ]
+}
