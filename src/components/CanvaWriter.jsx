@@ -1,8 +1,6 @@
 import { useEffect, useRef } from "react";
 import "./styles/canvaWriter.css";
 
-let currentAnimation = null;
-
 export default function CanvaWriter({
   kanji,
   db_strokes = [],

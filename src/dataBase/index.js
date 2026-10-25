@@ -1,6 +1,5 @@
 import { Suzume } from "https://cdn.jsdelivr.net/npm/@libraz/suzume/dist/index.js";
 import clearSplitStory from "./clearSplitStory";
-import kanjis from "./kanjis";
 import findNextKanji from "./findNextKanji";
 
 let dbCreated = null;
@@ -43,7 +42,6 @@ export default class DataBase {
       title: json.title,
       content: json.content,
       comment: json.comment,
-      fullCovered: json.fullCovered || false, // true || false
     };
   }
   wordSchema(json) {
@@ -103,9 +101,10 @@ export default class DataBase {
 
     save.currentPracticeBlock = (callback) => {
       if (!blocks.length) return false;
+      const alea = Math.floor(Math.random() * (blocks.length + 1));
 
       save.currentStoryId = story.id;
-      save.currentBlockSelected = blocks.shift();
+      save.currentBlockSelected = blocks.splice(alea, 1)[0];
 
       analizeBlock(save.currentBlockSelected, (morphemes) => {
         save.currentMorphemes = morphemes.filter((mr) => {

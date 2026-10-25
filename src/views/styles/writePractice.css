@@ -1,3 +1,13 @@
+.writePracticeContainer {
+    position: relative;
+}
+
+.writePracticeContainer .owari {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+}
+
 .writePracticeContainer h1 {
     padding: 20px 0;
 }

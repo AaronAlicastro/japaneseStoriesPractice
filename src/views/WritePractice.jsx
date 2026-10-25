@@ -144,6 +144,8 @@ export default function WritePractice({ change, dataBase }) {
         <textarea ref={newWordNotaRef}></textarea>
         <GnBtn click={registerWord}>Reistrar</GnBtn>
       </div>
+
+      <button className="owari gnBtn" onClick={() => change("init")}>終わり</button>
     </div>
   );
 }

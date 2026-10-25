@@ -1,15 +1,18 @@
 {
+  "homepage": "https://aaronalicastro.github.io/japaneseStoriesPractice/",
   "name": "app",
   "version": "1.0.0",
   "private": true,
   "dependencies": {
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
-    "react-scripts": "^0.0.0"
+    "react-scripts": "5.0.1"
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build"
+    "build": "react-scripts build",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
