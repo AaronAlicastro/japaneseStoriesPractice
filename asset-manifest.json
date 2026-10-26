@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/japaneseStoriesPractice/static/css/main.88280990.css",
-    "main.js": "/japaneseStoriesPractice/static/js/main.a737ab2d.js",
+    "main.css": "/japaneseStoriesPractice/static/css/main.8e4d17aa.css",
+    "main.js": "/japaneseStoriesPractice/static/js/main.23a33f92.js",
     "index.html": "/japaneseStoriesPractice/index.html",
-    "main.88280990.css.map": "/japaneseStoriesPractice/static/css/main.88280990.css.map",
-    "main.a737ab2d.js.map": "/japaneseStoriesPractice/static/js/main.a737ab2d.js.map"
+    "main.8e4d17aa.css.map": "/japaneseStoriesPractice/static/css/main.8e4d17aa.css.map",
+    "main.23a33f92.js.map": "/japaneseStoriesPractice/static/js/main.23a33f92.js.map"
   },
   "entrypoints": [
-    "static/css/main.88280990.css",
-    "static/js/main.a737ab2d.js"
+    "static/css/main.8e4d17aa.css",
+    "static/js/main.23a33f92.js"
   ]
 }
