@@ -1,0 +1,8 @@
+.japanesePlayerContainer button {
+    border: 1px solid #f00;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+}

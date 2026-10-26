@@ -2,6 +2,11 @@ import { useRef, useState } from "react";
 import "./styles/writePractice.css";
 import GnBtn from "../components/GnBtn";
 import CanvaWriter from "../components/CanvaWriter";
+import {
+  playJapaneseText,
+  stopJapaneseLecture,
+} from "../components/JapanesePlayer";
+import knajiBase from "../dataBase/kanjiBase";
 
 let blockSentenceCursor = null;
 let cursor = null;
@@ -13,16 +18,31 @@ export default function WritePractice({ change, dataBase }) {
   };
   const messageRef = useRef(null);
   const newWordNotaRef = useRef(null);
+  const startPlaying = () => {
+    setTimeout(() => {
+      stopJapaneseLecture();
+      playJapaneseText(cursor.origin);
+    }, 500);
+  };
 
   if (firstBlock) {
     blockSentenceCursor = dataBase.createBlockSentence();
     cursor = blockSentenceCursor();
+    startPlaying();
   }
+
+  const closePractice = () => {
+    const si = window.confirm("¿Quieres cerrar la práctica?");
+    if (si) change("storiesHandler");
+  };
 
   const nextKanji = () => {
     messageRef.current.innerHTML = `Escribe el siguiente <br /> ¿Que va en '--'?`;
     const newCursor = blockSentenceCursor();
-    const reset = () => setFirstBlock(true);
+    const reset = () => {
+      startPlaying();
+      setFirstBlock(true);
+    };
 
     if (newCursor) {
       cursor = newCursor;
@@ -30,14 +50,29 @@ export default function WritePractice({ change, dataBase }) {
       return;
     }
 
-    if (!dataBase.currentPracticeBlock(reset)) alert("COMPLETADO CAMPEON");
+    if (!dataBase.currentPracticeBlock(reset)) {
+      window.alert("お疲れ様です！、練習がおわったよ！");
+      change(false, (goTo) => {
+        setTimeout(() => goTo("storiesHandler"), 1000);
+      });
+    }
   };
 
   const hasBeenComplete = () => {
     dataBase.db_kanjiHasBeenSearched = false;
     dataBase.kanjiLearnedFound = null;
-
+    console.log(cursor.kanji);
+    const kanjiWrited = knajiBase.find((k) => k.char === cursor.kanji);
     let message = `Increíble ¡! <br /> <br /> <br />`;
+    let kanjiInfoBase = "";
+
+    if (kanjiWrited) {
+      const ety = (kanjiWrited.etimology + "").replaceAll(",", " | ");
+      const sds = (kanjiWrited.sounds + "").replaceAll(",", " - ");
+      kanjiInfoBase = `${ety} <br /> ${sds} <br /> <br /> <br />`;
+      message = kanjiInfoBase + message;
+    } else window.alert(cursor.kanji + " no está");
+
     const button = document.createElement("button");
     button.setAttribute("class", "gnBtn");
     button.innerHTML = "Siguiente";
@@ -50,7 +85,7 @@ export default function WritePractice({ change, dataBase }) {
     }
 
     dataBase.findWord(cursor.wordDetected, (word) => {
-      if (word) message = word.note + "<br /> <br /> <br />";
+      if (word) message = kanjiInfoBase + word.note + "<br /> <br /> <br />";
       else {
         document.querySelector(".floatWordRegister").style.display = "flex";
       }
@@ -145,7 +180,9 @@ export default function WritePractice({ change, dataBase }) {
         <GnBtn click={registerWord}>Reistrar</GnBtn>
       </div>
 
-      <button className="owari gnBtn" onClick={() => change("init")}>終わり</button>
+      <button className="owari gnBtn" onClick={closePractice}>
+        終わり
+      </button>
     </div>
   );
 }

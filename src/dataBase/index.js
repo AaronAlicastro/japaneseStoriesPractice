@@ -34,7 +34,6 @@ export default class DataBase {
       dbCreated = event.target.result;
       console.log("Data base connected");
     };
-    request.onerror = (event) => console.error(event);
   }
 
   storySchema(json) {
@@ -91,8 +90,9 @@ export default class DataBase {
   }
 
   // analize story
-  createWritePracticeBlock(story, finish) {
+  createWritePracticeBlock(story) {
     const save = this;
+    save.currentStoryId = story.id;
     const blocks = clearSplitStory(story.content);
     const analizeBlock = async (block, res) => {
       const suzume = await Suzume.create();
@@ -102,8 +102,6 @@ export default class DataBase {
     save.currentPracticeBlock = (callback) => {
       if (!blocks.length) return false;
       const alea = Math.floor(Math.random() * (blocks.length + 1));
-
-      save.currentStoryId = story.id;
       save.currentBlockSelected = blocks.splice(alea, 1)[0];
 
       analizeBlock(save.currentBlockSelected, (morphemes) => {
@@ -125,8 +123,6 @@ export default class DataBase {
 
       return true;
     };
-
-    save.currentPracticeBlock(() => finish());
   }
 
   createBlockSentence() {
@@ -137,7 +133,7 @@ export default class DataBase {
 
     return () => {
       let wordDetected = false;
-      const { kanji, text, noFound } = findNextKanji(
+      const { kanji, text, origin, noFound } = findNextKanji(
         this.currentBlockSelected,
         kajisWrited,
       );
@@ -151,7 +147,7 @@ export default class DataBase {
           currendWordWrited = "";
         }
 
-        return { kanji, text, wordDetected };
+        return { kanji, text, origin, wordDetected };
       }
 
       return false;

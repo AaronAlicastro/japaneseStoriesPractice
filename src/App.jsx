@@ -5,10 +5,12 @@ import StoriesHandler from "./views/StoriesHandler";
 import DataBase from "./dataBase";
 import WritePractice from "./views/WritePractice";
 import StoryRegister from "./views/StoryRegister";
+import StoryLecture from "./views/StoryLecture";
 
 class App extends Component {
   constructor(props) {
     super(props);
+    speechSynthesis.cancel();
     this.dataBase = new DataBase();
     this.stories = [];
 
@@ -31,6 +33,13 @@ class App extends Component {
 
       storiesHandler: () => (
         <StoriesHandler
+          change={(w, fun) => this.putViewCarga(w, fun)}
+          dataBase={this.dataBase}
+        />
+      ),
+
+      storyLecture: () => (
+        <StoryLecture
           change={(w, fun) => this.putViewCarga(w, fun)}
           dataBase={this.dataBase}
         />

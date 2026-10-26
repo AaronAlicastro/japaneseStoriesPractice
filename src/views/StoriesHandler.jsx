@@ -22,9 +22,8 @@ export default function StoriesHandler({ change, dataBase }) {
   };
 
   const selectStory = (story) => {
-    change(false, (goTo) => {
-      dataBase.createWritePracticeBlock(story, () => goTo("writePractice"));
-    });
+    dataBase.createWritePracticeBlock(story);
+    change("storyLecture");
   };
 
   const displayStories = () => {

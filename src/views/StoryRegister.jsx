@@ -1,4 +1,4 @@
-import "./styles/storyRegister.css"
+import "./styles/storyRegister.css";
 import { useRef } from "react";
 import GnBtn from "../components/GnBtn";
 
@@ -29,21 +29,18 @@ export default function StoryRegister({ change, dataBase }) {
 
   return (
     <div className="storyRegisterContainer panel flex_column">
-      <p>
-        Registra la historia, lectura o estudio que
-        quieras repasar
-      </p>
+      <p>Registra la historia, lectura o estudio que quieras repasar</p>
       <p>Título</p>
-      <input ref={storyTitleRef} type="text" name="storyTitle" />
+      <input ref={storyTitleRef} type="text" />
 
       <div className="storyCreatorContainer flex_row">
         <label className="flex_column">
           Historia
-          <textarea ref={storyRef} name="content"></textarea>
+          <textarea ref={storyRef}></textarea>
         </label>
         <label className="flex_column">
           Comentario
-          <textarea ref={commentRef} name="comment"></textarea>
+          <textarea ref={commentRef}></textarea>
         </label>
       </div>
 
