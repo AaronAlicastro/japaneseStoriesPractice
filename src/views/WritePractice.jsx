@@ -18,33 +18,21 @@ export default function WritePractice({ change, dataBase }) {
   };
   const messageRef = useRef(null);
   const newWordNotaRef = useRef(null);
-  const startPlaying = () => {
+  const startPlaying = (finish) => {
     setTimeout(() => {
       stopJapaneseLecture();
-      playJapaneseText(cursor.origin);
+      playJapaneseText(cursor.origin, finish);
     }, 500);
   };
 
-  if (firstBlock) {
-    blockSentenceCursor = dataBase.createBlockSentence();
-    cursor = blockSentenceCursor();
-    startPlaying();
-  }
-
-  const closePractice = () => {
-    const si = window.confirm("¿Quieres cerrar la práctica?");
-    if (si) change("storiesHandler");
-  };
-
-  const nextKanji = () => {
-    messageRef.current.innerHTML = `Escribe el siguiente <br /> ¿Que va en '--'?`;
+  const validateCursorBlock = () => {
     const newCursor = blockSentenceCursor();
     const reset = () => {
       startPlaying();
-      setFirstBlock(true);
+      setFirstBlock(firstBlock ? { e: true } : true);
     };
 
-    if (newCursor) {
+    if (!newCursor.noFound) {
       cursor = newCursor;
       reLoadComponent();
       return;
@@ -58,10 +46,27 @@ export default function WritePractice({ change, dataBase }) {
     }
   };
 
+  if (firstBlock) {
+    blockSentenceCursor = dataBase.createBlockSentence();
+    cursor = blockSentenceCursor();
+    startPlaying(() => {
+      if (cursor.noFound) setTimeout(validateCursorBlock, 500);
+    });
+  }
+
+  const closePractice = () => {
+    const si = window.confirm("¿Quieres cerrar la práctica?");
+    if (si) change("storiesHandler");
+  };
+
+  const nextKanji = () => {
+    messageRef.current.innerHTML = `Escribe el siguiente <br /> ¿Que va en '--'?`;
+    validateCursorBlock();
+  };
+
   const hasBeenComplete = () => {
     dataBase.db_kanjiHasBeenSearched = false;
     dataBase.kanjiLearnedFound = null;
-    console.log(cursor.kanji);
     const kanjiWrited = knajiBase.find((k) => k.char === cursor.kanji);
     let message = `Increíble ¡! <br /> <br /> <br />`;
     let kanjiInfoBase = "";
@@ -127,12 +132,20 @@ export default function WritePractice({ change, dataBase }) {
   const lineKanjiWrited = (lines, animate) => {
     if (dataBase.kanjiLearnedFound) {
       if (lines === dataBase.kanjiLearnedFound.strokes.length) {
-        animate(() => hasBeenComplete());
+        setTimeout(() => animate(() => hasBeenComplete()), 500);
       }
     }
   };
 
+  const renderTitle = () => {
+    const title = cursor.noFound ? cursor.origin : cursor.text;
+
+    return <h1> {title} </h1>;
+  };
+
   const renderCanvas = () => {
+    if (cursor.noFound) return <p>...</p>;
+
     if (!dataBase.db_kanjiHasBeenSearched) {
       dataBase.findKanjiLearned(cursor.kanji, (found) => {
         if (!found) {
@@ -159,18 +172,20 @@ export default function WritePractice({ change, dataBase }) {
     );
   };
 
+  const renderMessageP = () => {
+    const note = cursor.noFound
+      ? "..."
+      : `Escribe el siguiente <br /> ¿Que va en '--'?`;
+
+    return <p ref={messageRef}>{note}</p>;
+  };
+
   return (
     <div className="writePracticeContainer panel flex_column">
-      <h1> {cursor.text} </h1>
+      {renderTitle()}
       <div className="kanjiPracticeArea">
         {renderCanvas()}
-
-        <div>
-          <p ref={messageRef}>
-            Escribe el siguiente <br />
-            ¿Que va en '--'?
-          </p>
-        </div>
+        {renderMessageP()}
       </div>
 
       <div className="floatWordRegister">

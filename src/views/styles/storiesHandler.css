@@ -9,6 +9,8 @@
 }
 
 .flex_storiesContainer {
+    flex-wrap: wrap;
+    justify-content: center;
     width: 100dvw;
     max-height: 500px;
     overflow-y: auto;

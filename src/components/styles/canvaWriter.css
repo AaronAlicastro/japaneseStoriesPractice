@@ -11,14 +11,38 @@
     color: #ededed;
     font-size: 12rem;
     position: absolute;
-    left: calc(50% - 96px);
-    top: calc(50% - 139px);
     font-family: "Klee One", cursive;
     font-weight: 400;
     font-style: normal;
     cursor: default;
     user-select: none;
     z-index: -1;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -100%);
+    line-height: 0.1;
+}
+
+.kanjiRefWriter_cruz::before {
+    content: "";
+    display: inline-block;
+    position: absolute;
+    left: -100px;
+    top: 50%;
+    width: 200px;
+    height: 20px;
+    border-top: 4px solid #ededed;
+}
+
+.kanjiRefWriter_cruz::after {
+    content: "";
+    display: inline-block;
+    position: absolute;
+    left: 50%;
+    top: -100px;
+    width: 20px;
+    height: 200px;
+    border-left: 4px solid #ededed;
 }
 
 canvas {

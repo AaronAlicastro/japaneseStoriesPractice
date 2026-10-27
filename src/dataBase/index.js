@@ -101,7 +101,7 @@ export default class DataBase {
 
     save.currentPracticeBlock = (callback) => {
       if (!blocks.length) return false;
-      const alea = Math.floor(Math.random() * (blocks.length + 1));
+      const alea = Math.floor(Math.random() * blocks.length);
       save.currentBlockSelected = blocks.splice(alea, 1)[0];
 
       analizeBlock(save.currentBlockSelected, (morphemes) => {
@@ -133,10 +133,8 @@ export default class DataBase {
 
     return () => {
       let wordDetected = false;
-      const { kanji, text, origin, noFound } = findNextKanji(
-        this.currentBlockSelected,
-        kajisWrited,
-      );
+      const origin = this.currentBlockSelected + "";
+      const { kanji, text, noFound } = findNextKanji(origin, kajisWrited);
 
       if (!noFound) {
         currendWordWrited = currendWordWrited + kanji;
@@ -150,7 +148,7 @@ export default class DataBase {
         return { kanji, text, origin, wordDetected };
       }
 
-      return false;
+      return { noFound, origin };
     };
   }
 

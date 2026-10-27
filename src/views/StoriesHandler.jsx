@@ -30,7 +30,7 @@ export default function StoriesHandler({ change, dataBase }) {
     if (!stories.length) return <p>Cero Encontradas</p>;
 
     return (
-      <div className="flex_storiesContainer">
+      <div className="flex_storiesContainer flex_row">
         {stories.map((story) => (
           <Cards
             key={story.id}

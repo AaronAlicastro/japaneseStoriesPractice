@@ -13,11 +13,11 @@ export default function CanvaWriter({
   const registrarBtnRef = useRef(null);
 
   const renderKanjiShadow = () => {
-    if (!db_strokes.length) {
-      return <span className="kanjiRefWriter"> {kanji} </span>;
+    if (db_strokes.length) {
+      return <span className="kanjiRefWriter_cruz"></span>;
     }
 
-    return "";
+    return <span> {kanji} </span>;
   };
   const renderButtons = () => {
     if (!db_strokes.length) {
