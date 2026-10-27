@@ -54,6 +54,7 @@ export default class DataBase {
     return {
       char: json.char,
       strokes: json.strokes || [],
+      important: json.important || true,
     };
   }
 
@@ -154,11 +155,20 @@ export default class DataBase {
 
   // kanjiLearned
   recordKanjiLearned(kanji, callback) {
-    // const save = this;
+    const save = this;
     const kanjiJson = this.kanjiLearnedSchema(kanji);
     const kanjiTrans = dbCreated.transaction(["kanjiLearned"], "readwrite");
     const kanjiStore = kanjiTrans.objectStore("kanjiLearned");
-    kanjiStore.add(kanjiJson).onsuccess = () => callback();
+    kanjiStore.add(kanjiJson).onsuccess = () => {
+      save.kanjiLearnedFound = kanjiJson;
+      callback();
+    };
+  }
+
+  putKanjiLearned(kanji) {
+    const kanjiTrans = dbCreated.transaction(["kanjiLearned"], "readwrite");
+    const kanjiStore = kanjiTrans.objectStore("kanjiLearned");
+    kanjiStore.put(kanji);
   }
 
   findKanjiLearned(kanji, callback) {

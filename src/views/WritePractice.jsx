@@ -6,7 +6,7 @@ import {
   playJapaneseText,
   stopJapaneseLecture,
 } from "../components/JapanesePlayer";
-import knajiBase from "../dataBase/kanjiBase";
+import kanjiBase from "../dataBase/kanjiBase";
 
 let blockSentenceCursor = null;
 let cursor = null;
@@ -60,14 +60,13 @@ export default function WritePractice({ change, dataBase }) {
   };
 
   const nextKanji = () => {
-    messageRef.current.innerHTML = `Escribe el siguiente <br /> ¿Que va en '--'?`;
+    messageRef.current.innerHTML = "Escribe el siguiente ¿Que va en --?";
     validateCursorBlock();
   };
 
   const hasBeenComplete = () => {
-    dataBase.db_kanjiHasBeenSearched = false;
-    dataBase.kanjiLearnedFound = null;
-    const kanjiWrited = knajiBase.find((k) => k.char === cursor.kanji);
+    const kanjiWrited = kanjiBase.find((k) => k.char === cursor.kanji);
+    const newKanji = { ...dataBase.kanjiLearnedFound };
     let message = `Increíble ¡! <br /> <br /> <br />`;
     let kanjiInfoBase = "";
 
@@ -76,7 +75,19 @@ export default function WritePractice({ change, dataBase }) {
       const sds = (kanjiWrited.sounds + "").replaceAll(",", " - ");
       kanjiInfoBase = `${ety} <br /> ${sds} <br /> <br /> <br />`;
       message = kanjiInfoBase + message;
-    } else window.alert(cursor.kanji + " no está");
+    } else if (newKanji.important) {
+      const si = window.confirm(
+        cursor.kanji + " no está, ¿marcar como no importante?",
+      );
+
+      if (si) {
+        newKanji.important = false;
+        dataBase.putKanjiLearned(newKanji);
+      }
+    }
+
+    dataBase.db_kanjiHasBeenSearched = false;
+    dataBase.kanjiLearnedFound = null;
 
     const button = document.createElement("button");
     button.setAttribute("class", "gnBtn");
@@ -173,9 +184,7 @@ export default function WritePractice({ change, dataBase }) {
   };
 
   const renderMessageP = () => {
-    const note = cursor.noFound
-      ? "..."
-      : `Escribe el siguiente <br /> ¿Que va en '--'?`;
+    const note = cursor.noFound ? "..." : "Escribe el siguiente ¿Que va en --?";
 
     return <p ref={messageRef}>{note}</p>;
   };
@@ -192,7 +201,7 @@ export default function WritePractice({ change, dataBase }) {
         <h1>Nueva palabra: {cursor.wordDetected} </h1>
         <p>Pon una nota</p>
         <textarea ref={newWordNotaRef}></textarea>
-        <GnBtn click={registerWord}>Reistrar</GnBtn>
+        <GnBtn click={registerWord}>Registrar</GnBtn>
       </div>
 
       <button className="owari gnBtn" onClick={closePractice}>

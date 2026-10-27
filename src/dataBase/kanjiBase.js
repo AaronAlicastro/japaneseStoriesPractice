@@ -1,4 +1,4 @@
-const knajiBase = [
+const kanjiBase = [
   {
     char: "暖",
     etimology: ["sol", "mano", "lentitud"],
@@ -1186,4 +1186,4 @@ const knajiBase = [
   },
 ];
 
-export default knajiBase;
+export default kanjiBase;
