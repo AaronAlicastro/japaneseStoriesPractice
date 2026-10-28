@@ -105,7 +105,7 @@ export default class DataBase {
       const alea = Math.floor(Math.random() * blocks.length);
       save.currentBlockSelected = blocks.splice(alea, 1)[0];
 
-      analizeBlock(save.currentBlockSelected, (morphemes) => {
+      analizeBlock(save.currentBlockSelected.origin, (morphemes) => {
         save.currentMorphemes = morphemes.filter((mr) => {
           if (
             mr.pos === "NOUN" ||
@@ -128,20 +128,20 @@ export default class DataBase {
 
   createBlockSentence() {
     const save = this;
-    const wordsDetected = save.currentMorphemes.map((mr) => mr.surface);
+    const morphemeWords = this.currentMorphemes.map((mr) => mr.surface);
     let currendWordWrited = "";
-    let kajisWrited = "";
 
     return () => {
       let wordDetected = false;
-      const origin = this.currentBlockSelected + "";
-      const { kanji, text, noFound } = findNextKanji(origin, kajisWrited);
+      const origin = save.currentBlockSelected.origin + "";
+      const currentKanji = save.currentBlockSelected.onlyKanjis.shift();
+
+      const { kanji, text, noFound } = findNextKanji(origin, currentKanji);
 
       if (!noFound) {
         currendWordWrited = currendWordWrited + kanji;
-        kajisWrited = kajisWrited + kanji;
 
-        if (wordsDetected.includes(currendWordWrited)) {
+        if (morphemeWords.includes(currendWordWrited)) {
           wordDetected = currendWordWrited + "";
           currendWordWrited = "";
         }
