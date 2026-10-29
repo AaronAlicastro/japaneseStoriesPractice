@@ -134,9 +134,9 @@ export default class DataBase {
     return () => {
       let wordDetected = false;
       const origin = save.currentBlockSelected.origin + "";
-      const currentKanji = save.currentBlockSelected.onlyKanjis.shift();
+      const kanji = save.currentBlockSelected.onlyKanjis.shift();
 
-      const { kanji, text, noFound } = findNextKanji(origin, currentKanji);
+      const { text, noFound } = findNextKanji(origin, kanji);
 
       if (!noFound) {
         currendWordWrited = currendWordWrited + kanji;
@@ -165,10 +165,10 @@ export default class DataBase {
     };
   }
 
-  putKanjiLearned(kanji) {
+  putKanjiLearned(kanji, callback = () => {}) {
     const kanjiTrans = dbCreated.transaction(["kanjiLearned"], "readwrite");
     const kanjiStore = kanjiTrans.objectStore("kanjiLearned");
-    kanjiStore.put(kanji);
+    kanjiStore.put(kanji).onsuccess = callback;
   }
 
   findKanjiLearned(kanji, callback) {

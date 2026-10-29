@@ -11,6 +11,7 @@ export default function CanvaWriter({
   const canvasRef = useRef(null);
   const borrarBtnRef = useRef(null);
   const registrarBtnRef = useRef(null);
+  const strokesAmountRef = useRef(null);
 
   const renderKanjiShadow = () => {
     if (db_strokes.length) {
@@ -20,26 +21,45 @@ export default function CanvaWriter({
     return <span> {kanji} </span>;
   };
   const renderButtons = () => {
-    if (!db_strokes.length) {
-      return (
-        <div
-          className="flex_row"
-          style={{ marginTop: "10px", justifyContent: "center" }}
-        >
-          <button ref={borrarBtnRef} className="gnBtn">
-            Borrar
-          </button>
-          <button ref={registrarBtnRef} className="gnBtn">
-            Registrar
-          </button>
-        </div>
-      );
-    }
+    const renderstrokesAmountRef = () => {
+      if (db_strokes.length) {
+        return (
+          <p
+            ref={strokesAmountRef}
+            style={{ textAlign: "center" }}
+            value={db_strokes.length}
+          >
+            Faltan {db_strokes.length} trazos
+          </p>
+        );
+      }
+
+      return "";
+    };
 
     return (
-      <p style={{ marginTop: "10px", textAlign: "center" }}>
-        Tiene {db_strokes.length} trazos
-      </p>
+      <div
+        className="flex_row"
+        style={{
+          marginTop: "10px",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        {renderstrokesAmountRef()}
+
+        <button ref={borrarBtnRef} className="gnBtn">
+          Borrar
+        </button>
+
+        <button
+          ref={registrarBtnRef}
+          className="canvaRightFloatBtn gnBtn"
+          value={db_strokes.length ? "edit" : "register"}
+        >
+          {db_strokes.length ? "Editar" : "Registrar"}
+        </button>
+      </div>
     );
   };
 
@@ -50,6 +70,17 @@ export default function CanvaWriter({
     const ctx = canvas.getContext("2d");
     const strokes = [];
     const lines = [];
+
+    const putLineMessage = (amount) => {
+      const editClicked = borrarBtnRef.current.getAttribute("value");
+      if (editClicked) {
+        strokesAmountRef.current.innerHTML = "Editando...";
+        return;
+      }
+
+      strokesAmountRef.current.setAttribute("value", amount);
+      strokesAmountRef.current.innerHTML = `Faltan ${amount} trazos`;
+    };
 
     const getPoint = (event) => {
       const rect = canvas.getBoundingClientRect();
@@ -148,6 +179,13 @@ export default function CanvaWriter({
       if (lines.length) {
         strokes.push([...lines]);
         lines.splice(0);
+
+        if (strokesAmountRef.current) {
+          const strokeNumber =
+            parseInt(strokesAmountRef.current.getAttribute("value")) - 1;
+          putLineMessage(strokeNumber);
+        }
+
         linesHandler(strokes.length, (f) => {
           animateStrokes(db_strokes, f);
         });
@@ -158,19 +196,28 @@ export default function CanvaWriter({
     canvas.addEventListener("touchmove", continueStrokes);
     canvas.addEventListener("touchend", finishStrokes);
 
-    if (borrarBtnRef.current) {
-      borrarBtnRef.current.addEventListener("click", () => {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        strokes.splice(0);
+    borrarBtnRef.current.addEventListener("click", () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      strokes.splice(0);
+
+      if (strokesAmountRef.current) putLineMessage(db_strokes.length);
+    });
+
+    registrarBtnRef.current.addEventListener("click", () => {
+      const btnValue = registrarBtnRef.current.getAttribute("value");
+      if (btnValue === "edit") {
+        borrarBtnRef.current.setAttribute("value", "editClicked");
+      }
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const newStrokes = strokes.splice(0);
+      strokesHandler(newStrokes, btnValue, (f) => {
+        animateStrokes(newStrokes, f);
       });
-      registrarBtnRef.current.addEventListener("click", () => {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        const newStrokes = strokes.splice(0);
-        strokesHandler(newStrokes, (f) => {
-          animateStrokes(newStrokes, f);
-        });
-      });
-    }
+
+      registrarBtnRef.current.setAttribute("value", "edit");
+      registrarBtnRef.current.innerHTML = "Editar";
+    });
 
     return closeCanvas;
   }, [kanji]);

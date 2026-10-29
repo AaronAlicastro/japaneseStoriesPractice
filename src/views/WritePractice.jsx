@@ -127,8 +127,21 @@ export default function WritePractice({ change, dataBase }) {
     }
   };
 
-  const registerKanjiLearned = (strokes, animate) => {
+  const registerKanjiLearned = (strokes, indicator, animate) => {
     if (strokes.length) {
+      if (indicator === "edit") {
+        const newKanjiLearned = {
+          char: cursor.kanji,
+          strokes,
+        };
+
+        dataBase.putKanjiLearned(newKanjiLearned, () => {
+          animate(() => hasBeenComplete());
+        });
+
+        return;
+      }
+
       const kanjiLearned = {
         char: cursor.kanji,
         strokes,
