@@ -1,5 +1,7 @@
 import { useEffect, useRef } from "react";
 import "./styles/canvaWriter.css";
+import { IconContext } from "react-icons";
+import { CiRedo } from "react-icons/ci";
 
 export default function CanvaWriter({
   kanji,
@@ -10,6 +12,7 @@ export default function CanvaWriter({
 }) {
   const canvasRef = useRef(null);
   const borrarBtnRef = useRef(null);
+  const reloadBtnRef = useRef(null);
   const registrarBtnRef = useRef(null);
   const strokesAmountRef = useRef(null);
 
@@ -37,6 +40,20 @@ export default function CanvaWriter({
       return "";
     };
 
+    const renderReloadBtn = () => {
+      if (db_strokes.length) {
+        return (
+          <button ref={reloadBtnRef} className="canvaReloadBtn">
+            <IconContext.Provider value={{ size: "1rem", color: "#F00" }}>
+              <CiRedo />
+            </IconContext.Provider>
+          </button>
+        );
+      }
+
+      return "";
+    };
+
     return (
       <div
         className="flex_row"
@@ -51,6 +68,8 @@ export default function CanvaWriter({
         <button ref={borrarBtnRef} className="gnBtn">
           Borrar
         </button>
+
+        {renderReloadBtn()}
 
         <button
           ref={registrarBtnRef}
@@ -218,6 +237,12 @@ export default function CanvaWriter({
       registrarBtnRef.current.setAttribute("value", "edit");
       registrarBtnRef.current.innerHTML = "Editar";
     });
+
+    if (reloadBtnRef.current) {
+      reloadBtnRef.current.addEventListener("click", () => {
+        animateStrokes(db_strokes, () => {});
+      });
+    }
 
     return closeCanvas;
   }, [kanji]);
