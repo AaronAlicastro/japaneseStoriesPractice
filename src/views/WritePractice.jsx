@@ -3,6 +3,7 @@ import "./styles/writePractice.css";
 import GnBtn from "../components/GnBtn";
 import CanvaWriter from "../components/CanvaWriter";
 import {
+  JapanesePlayer,
   playJapaneseText,
   stopJapaneseLecture,
 } from "../components/JapanesePlayer";
@@ -215,9 +216,11 @@ export default function WritePractice({ change, dataBase }) {
   };
 
   const renderTitle = () => {
-    const title = cursor.noFound ? cursor.origin : cursor.text;
-
-    return <h1> {title} </h1>;
+    return (
+      <h1 className="flex_row">
+        {cursor.origin} <JapanesePlayer text={cursor.origin} />
+      </h1>
+    );
   };
 
   const renderCanvas = () => {
