@@ -218,7 +218,8 @@ export default function WritePractice({ change, dataBase }) {
   const renderTitle = () => {
     return (
       <h1 className="flex_row">
-        {cursor.origin} <JapanesePlayer text={cursor.origin} />
+        {cursor.text ? cursor.text : cursor.origin}
+        <JapanesePlayer text={cursor.origin} />
       </h1>
     );
   };
