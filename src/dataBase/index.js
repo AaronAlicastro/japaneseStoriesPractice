@@ -1,6 +1,7 @@
 import { Suzume } from "https://cdn.jsdelivr.net/npm/@libraz/suzume/dist/index.js";
 import clearSplitStory from "./clearSplitStory";
 import findNextKanji from "./findNextKanji";
+import morphemeWordsCreator from "./morphemeWordsCreator";
 
 let dbCreated = null;
 
@@ -11,23 +12,30 @@ export default class DataBase {
     }
 
     this.stories = [];
-    const request = window.indexedDB.open("JapaneseStudies", 1);
+    const request = window.indexedDB.open("JapaneseStudies", 2);
 
     request.onupgradeneeded = (event) => {
       const initDB = event.target.result;
 
-      initDB.createObjectStore("stories", {
-        keyPath: "id",
-        autoIncrement: true,
-      });
-      initDB.createObjectStore("kanjiLearned", {
-        keyPath: "char",
-      });
+      if (initDB.objectStoreNames.contains("words")) {
+        initDB.deleteObjectStore("words");
+        window.alert("Reinicio de palabras");
+      }
+
+      if (!initDB.objectStoreNames.contains("stories")) {
+        initDB.createObjectStore("stories", {
+          keyPath: "id",
+          autoIncrement: true,
+        });
+        initDB.createObjectStore("kanjiLearned", {
+          keyPath: "char",
+        });
+      }
+
+      window.alert("Creando esquema de palabras nuevamente");
       const wordStore = initDB.createObjectStore("words", {
         keyPath: "word",
       });
-
-      wordStore.createIndex("storyID_idx", "storyID", { unique: false });
     };
 
     request.onsuccess = (event) => {
@@ -45,7 +53,6 @@ export default class DataBase {
   }
   wordSchema(json) {
     return {
-      storyID: json.storyID,
       word: json.word,
       note: json.note,
     };
@@ -128,28 +135,22 @@ export default class DataBase {
 
   createBlockSentence() {
     const save = this;
-    const morphemeWords = this.currentMorphemes.map((mr) => mr.surface);
-    let currendWordWrited = "";
+    const morphemeWords = new morphemeWordsCreator(this.currentMorphemes);
 
     return () => {
-      let wordDetected = false;
       const origin = save.currentBlockSelected.origin + "";
       const kanji = save.currentBlockSelected.onlyKanjis.shift();
 
       const { text, noFound } = findNextKanji(origin, kanji);
+      morphemeWords.validate(kanji);
 
-      if (!noFound) {
-        currendWordWrited = currendWordWrited + kanji;
-
-        if (morphemeWords.includes(currendWordWrited)) {
-          wordDetected = currendWordWrited + "";
-          currendWordWrited = "";
-        }
-
-        return { kanji, text, origin, wordDetected };
-      }
-
-      return { noFound, origin };
+      return {
+        noFound,
+        kanji,
+        text,
+        origin,
+        wordDetected: morphemeWords.found,
+      };
     };
   }
 
@@ -188,7 +189,7 @@ export default class DataBase {
     const wordJson = this.wordSchema(word);
     const wordTransaction = dbCreated.transaction(["words"], "readwrite");
     const wordStore = wordTransaction.objectStore("words");
-    wordStore.add(wordJson).onsuccess = () => callback();
+    wordStore.put(wordJson).onsuccess = () => callback();
   }
 
   findWord(word, callback) {

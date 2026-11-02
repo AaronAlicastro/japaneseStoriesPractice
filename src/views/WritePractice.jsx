@@ -64,6 +64,21 @@ export default function WritePractice({ change, dataBase }) {
     validateCursorBlock();
   };
 
+  const newWordRegisterOpener = (wordsNoFound, note) => {
+    const wordRegisterfather = document.querySelector(".floatWordRegister");
+    wordRegisterfather.style.display = "flex";
+    wordRegisterfather.children[0].innerHTML = wordsNoFound[0];
+    newWordNotaRef.current.value = note ? note : "";
+    wordRegisterfather.children[4].onclick = () => {
+      registerWordHandler(
+        wordRegisterfather,
+        wordRegisterfather.children[0],
+        wordRegisterfather.children[4],
+        wordsNoFound,
+      );
+    };
+  };
+
   const hasBeenComplete = () => {
     const kanjiWrited = kanjiBase.find((k) => k.char === cursor.kanji);
     const newKanji = { ...dataBase.kanjiLearnedFound };
@@ -73,7 +88,7 @@ export default function WritePractice({ change, dataBase }) {
     if (kanjiWrited) {
       const ety = (kanjiWrited.etimology + "").replaceAll(",", " | ");
       const sds = (kanjiWrited.sounds + "").replaceAll(",", " - ");
-      kanjiInfoBase = `${ety} <br /> ${sds} <br /> <br /> <br />`;
+      kanjiInfoBase = `${ety} <br /> ${sds} <br /> <br />`;
       message = kanjiInfoBase + message;
     } else if (newKanji.important) {
       const si = window.confirm(
@@ -91,39 +106,77 @@ export default function WritePractice({ change, dataBase }) {
 
     const button = document.createElement("button");
     button.setAttribute("class", "gnBtn");
-    button.innerHTML = "Siguiente";
+    button.innerHTML = "次の";
     button.addEventListener("click", nextKanji);
 
-    if (!cursor.wordDetected) {
+    if (!cursor.wordDetected.length) {
       messageRef.current.innerHTML = message;
       messageRef.current.appendChild(button);
       return;
     }
 
-    dataBase.findWord(cursor.wordDetected, (word) => {
-      if (word) message = kanjiInfoBase + word.note + "<br /> <br /> <br />";
-      else {
-        document.querySelector(".floatWordRegister").style.display = "flex";
-      }
+    messageRef.current.innerHTML = kanjiInfoBase + "";
+    const wordsNoFound = [];
 
-      messageRef.current.innerHTML = message;
+    const searchWord = (finish) => {
+      const wordToSearch = cursor.wordDetected.shift();
+      const spanM = document.createElement("span");
+      spanM.classList.add("kanjiPracticeArea_mSpan");
+
+      dataBase.findWord(wordToSearch, (word) => {
+        if (word) {
+          spanM.innerHTML = `<b>${word.word}:</b> ${word.note}`;
+          spanM.onclick = () => newWordRegisterOpener([word.word], word.note);
+          messageRef.current.appendChild(spanM);
+        } else wordsNoFound.push(wordToSearch);
+
+        if (cursor.wordDetected.length) searchWord(finish);
+        else finish();
+      });
+    };
+
+    searchWord(() => {
       messageRef.current.appendChild(button);
+      if (wordsNoFound.length) newWordRegisterOpener(wordsNoFound);
     });
   };
 
-  const registerWord = () => {
+  const registerWordHandler = (
+    wordRegisterfather,
+    registerTitle,
+    registerBtn,
+    wordsNoFound,
+  ) => {
     const note = newWordNotaRef.current.value.trim();
 
     if (note) {
       const word = {
-        storyID: dataBase.currentStoryId,
-        word: cursor.wordDetected,
+        word: wordsNoFound.shift(),
         note,
       };
 
+      registerTitle.innerHTML = "Cargando...";
       newWordNotaRef.current.value = "";
-      document.querySelector(".floatWordRegister").style.display = "none";
-      dataBase.recordWord(word);
+      registerBtn.style.display = "none";
+
+      setTimeout(() => {
+        registerBtn.style.display = "inline-block";
+
+        dataBase.recordWord(word, () => {
+          if (wordsNoFound.length) {
+            registerTitle.innerHTML = wordsNoFound[0];
+
+            registerBtn.onclick = () => {
+              registerWordHandler(
+                wordRegisterfather,
+                registerTitle,
+                registerBtn,
+                wordsNoFound,
+              );
+            };
+          } else wordRegisterfather.style.display = "none";
+        });
+      }, 500);
     }
   };
 
@@ -199,7 +252,11 @@ export default function WritePractice({ change, dataBase }) {
   const renderMessageP = () => {
     const note = cursor.noFound ? "..." : "Escribe el siguiente ¿Que va en --?";
 
-    return <p ref={messageRef}>{note}</p>;
+    return (
+      <p ref={messageRef} className="kanjiPracticeArea_message">
+        {note}
+      </p>
+    );
   };
 
   return (
@@ -211,10 +268,17 @@ export default function WritePractice({ change, dataBase }) {
       </div>
 
       <div className="floatWordRegister">
-        <h1>Nueva palabra: {cursor.wordDetected} </h1>
+        <h1> Titulo </h1>
         <p>Pon una nota</p>
         <textarea ref={newWordNotaRef}></textarea>
-        <GnBtn click={registerWord}>Registrar</GnBtn>
+        <GnBtn
+          click={() => {
+            document.querySelector(".floatWordRegister").style.display = "none";
+          }}
+        >
+          Cancelar
+        </GnBtn>
+        <GnBtn>Registrar</GnBtn>
       </div>
 
       <button className="owari gnBtn" onClick={closePractice}>

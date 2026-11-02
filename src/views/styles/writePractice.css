@@ -17,6 +17,44 @@
     display: flex;
     justify-content: space-around;
     align-items: center;
+    position: relative;
+}
+
+.kanjiPracticeArea_message {
+    max-width: calc(100% - 600px);
+    max-height: 400px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 40px 0;
+}
+
+.kanjiPracticeArea_mSpan {
+    padding: 5px;
+    position: relative;
+    cursor: pointer;
+    display: block;
+    margin-bottom: 25px;
+}
+
+.kanjiPracticeArea_mSpan::before {
+    content: "";
+    display: inline-block;
+    position: absolute;
+    width: 100%;
+    height: 130%;
+    transform: translate(0, -15%);
+    border-top: 1px solid #3B82F6;
+    border-bottom: 1px solid #3B82F6;
+    left: 0;
+    top: 0;
+    z-index: -1;
+}
+
+.kanjiPracticeArea_message button {
+    position: absolute;
+    bottom: 0;
+    left: calc(600px + (100% - 600px) / 2);
+    transform: translate(-150%, 0);
 }
 
 .floatWordRegister {
@@ -37,4 +75,10 @@
     height: 300px;
     margin: 20px 0;
     padding: 10px;
+}
+
+.floatWordRegister button:nth-child(4) {
+    position: absolute;
+    left: 20px;
+    bottom: 20px;
 }
