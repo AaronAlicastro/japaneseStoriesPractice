@@ -1659,6 +1659,376 @@ const kanjiBase = [
     etimology: ["hueso", "lanza y boca"],
     sounds: ["のこる", "のこす", "ざん"],
   },
+  {
+    char: "森",
+    etimology: ["árbol", "árbol", "árbol"],
+    sounds: ["もり", "しん"],
+  },
+  {
+    char: "取",
+    etimology: ["oreja", "mano"],
+    sounds: ["とる", "しゅ"],
+  },
+  {
+    char: "魔",
+    etimology: ["cobertizo", "cañamo", "demonio"],
+    sounds: ["ま"],
+  },
+  {
+    char: "女",
+    etimology: ["mujer"],
+    sounds: ["おんな", "め", "じょ", "にょ", "にょう"],
+  },
+  {
+    char: "五",
+    etimology: ["cinco"],
+    sounds: ["いつつ", "いつ", "ご"],
+  },
+  {
+    char: "百",
+    etimology: ["uno", "blanco"],
+    sounds: ["ひゃく", "びゃく", "ぴゃく"],
+  },
+  {
+    char: "才",
+    etimology: ["brote", "talento"],
+    sounds: ["さい"],
+  },
+  {
+    char: "千",
+    etimology: ["persona", "diez"],
+    sounds: ["ち", "せん"],
+  },
+  {
+    char: "抜",
+    etimology: ["acción física", "amigo"],
+    sounds: ["ぬく", "ぬける", "ばつ"],
+  },
+  {
+    char: "家",
+    etimology: ["techo", "cerdo"],
+    sounds: ["いえ", "や", "うち", "か", "け"],
+  },
+  {
+    char: "人",
+    etimology: ["persona"],
+    sounds: ["ひと", "じん", "にん"],
+  },
+  {
+    char: "恋",
+    etimology: ["hilo", "disipar", "corazón"],
+    sounds: ["こい", "こいしい", "れん"],
+  },
+  {
+    char: "古",
+    etimology: ["diez", "boca"],
+    sounds: ["ふるい", "こ"],
+  },
+  {
+    char: "牙",
+    etimology: ["colmillo"],
+    sounds: ["きば", "が", "げ"],
+  },
+  {
+    char: "鍋",
+    etimology: ["oro", "cobertizo", "boca", "campo"],
+    sounds: ["なべ", "か"],
+  },
+  {
+    char: "煮",
+    etimology: ["viejo con cabello largo", "sol", "fuego"],
+    sounds: ["にる", "にかえす", "しゃ"],
+  },
+  {
+    char: "明",
+    etimology: ["sol", "luna"],
+    sounds: ["あかるい", "あける", "めい", "みょう"],
+  },
+  {
+    char: "返",
+    etimology: ["reverso", "camino"],
+    sounds: ["かえす", "かえる", "へん"],
+  },
+  {
+    char: "薬",
+    etimology: ["planta", "tambor", "árbol"],
+    sounds: ["くすり", "やく"],
+  },
+  {
+    char: "用",
+    etimology: ["utilidad"],
+    sounds: ["もちいる", "よう"],
+  },
+  {
+    char: "瓶",
+    etimology: ["combinar", "cerámica"],
+    sounds: ["かめ", "びん"],
+  },
+  {
+    char: "干",
+    etimology: ["escudo"],
+    sounds: ["ほす", "ひる", "かん"],
+  },
+  {
+    char: "滴",
+    etimology: ["agua", "antiguo", "antena"],
+    sounds: ["しずく", "したたる", "てき"],
+  },
+  {
+    char: "瞬",
+    etimology: ["ojo", "antena", "oprimir", "pies"],
+    sounds: ["またたく", "しゅん"],
+  },
+  {
+    char: "肌",
+    etimology: ["carne", "mesa"],
+    sounds: ["はだ", "き"],
+  },
+  {
+    char: "曲",
+    etimology: ["curva"],
+    sounds: ["まがる", "まげる", "きょく"],
+  },
+  {
+    char: "背",
+    etimology: ["norte", "carne"],
+    sounds: ["せ", "せい", "そむく", "はい"],
+  },
+  {
+    char: "伸",
+    etimology: ["persona", "extender"],
+    sounds: ["のびる", "のばす", "しん"],
+  },
+  {
+    char: "髪",
+    etimology: ["viejo con cabello largo", "antena", "amigo", "cabello"],
+    sounds: ["かみ", "はつ"],
+  },
+  {
+    char: "毛",
+    etimology: ["pelo"],
+    sounds: ["け", "もう"],
+  },
+  {
+    char: "姿",
+    etimology: ["surgir", "mujer"],
+    sounds: ["すがた", "し"],
+  },
+  {
+    char: "成",
+    etimology: ["lanza", "hacha"],
+    sounds: ["なる", "なす", "せい", "じょう"],
+  },
+  {
+    char: "功",
+    etimology: ["artesano", "fuerza"],
+    sounds: ["いさお", "こう", "く"],
+  },
+  {
+    char: "満",
+    etimology: ["agua", "dos", "ingresar"],
+    sounds: ["みちる", "みたす", "まん"],
+  },
+  {
+    char: "足",
+    etimology: ["boca", "detenerse"],
+    sounds: ["あし", "たりる", "たす", "そく"],
+  },
+  {
+    char: "臭",
+    etimology: ["naríz", "perro"],
+    sounds: ["くさい", "におう", "しゅう"],
+  },
+  {
+    char: "花",
+    etimology: ["planta", "persona", "inclinado"],
+    sounds: ["はな", "か"],
+  },
+  {
+    char: "飾",
+    etimology: ["alimento", "persona", "paño"],
+    sounds: ["かざる", "しょく"],
+  },
+  {
+    char: "付",
+    etimology: ["persona", "pulgada"],
+    sounds: ["つける", "つく", "ふ"],
+  },
+  {
+    char: "替",
+    etimology: ["persona", "persona", "sol"],
+    sounds: ["かえる", "かわる", "たい"],
+  },
+  {
+    char: "魅",
+    etimology: ["demonio", "aún no"],
+    sounds: ["み"],
+  },
+  {
+    char: "町",
+    etimology: ["campo", "clavo"],
+    sounds: ["まち", "ちょう"],
+  },
+  {
+    char: "微",
+    etimology: ["movimiento", "montaña", "persona", "lentitud"],
+    sounds: ["かすか", "び"],
+  },
+  {
+    char: "目",
+    etimology: ["ojo"],
+    sounds: ["め", "ま", "もく", "ぼく"],
+  },
+  {
+    char: "惚",
+    etimology: ["psiquis", "disipar", "corazón"],
+    sounds: ["ほれる", "ぼけ", "こつ"],
+  },
+  {
+    char: "晴",
+    etimology: ["sol", "azul"],
+    sounds: ["はれる", "はらす", "せい"],
+  },
+  {
+    char: "帰",
+    etimology: ["escoba", "delante", "camino"],
+    sounds: ["かえる", "かえす", "き"],
+  },
+  {
+    char: "入",
+    etimology: ["ingresar"],
+    sounds: ["入る", "いれる", "にゅう", "じゅ"],
+  },
+  {
+    char: "効",
+    etimology: ["intercambio", "fuerza"],
+    sounds: ["きく", "こう"],
+  },
+  {
+    char: "再",
+    etimology: ["dos", "recipiente"],
+    sounds: ["ふたたび", "さい", "さ"],
+  },
+  {
+    char: "元",
+    etimology: ["dos", "piernas"],
+    sounds: ["もと", "げん", "がん"],
+  },
+  {
+    char: "毎",
+    etimology: ["persona", "madre"],
+    sounds: ["ごと", "まい"],
+  },
+  {
+    char: "過",
+    etimology: ["hueso", "boca", "camino"],
+    sounds: ["すぎる", "すごす", "あやまる", "か"],
+  },
+  {
+    char: "良",
+    etimology: ["gota", "medida"],
+    sounds: ["よい", "いい", "りょう"],
+  },
+  {
+    char: "寄",
+    etimology: ["techo", "grande", "fuerza"],
+    sounds: ["よる", "よせる", "き"],
+  },
+  {
+    char: "果",
+    etimology: ["campo", "árbol"],
+    sounds: ["はたす", "はたす", "はてる", "か"],
+  },
+  {
+    char: "回",
+    etimology: ["recinto", "boca"],
+    sounds: ["まわる", "まわす", "かい"],
+  },
+  {
+    char: "当",
+    etimology: ["pequeño", "cobertizo"],
+    sounds: ["あたる", "あてる", "とう"],
+  },
+  {
+    char: "心",
+    etimology: ["corazón"],
+    sounds: ["こころ", "しん"],
+  },
+  {
+    char: "秘",
+    etimology: ["espiga", "invocar"],
+    sounds: ["ひめる", "ひ"],
+  },
+  {
+    char: "密",
+    etimology: ["techo", "serpiente", "montaña"],
+    sounds: ["ひそか", "みつ"],
+  },
+  {
+    char: "結",
+    etimology: ["hilo", "derecha", "boca"],
+    sounds: ["むすぶ", "ゆう", "けつ"],
+  },
+  {
+    char: "婚",
+    etimology: ["mujer", "sol", "氏"],
+    sounds: ["こん"],
+  },
+  {
+    char: "式",
+    etimology: ["estaca", "trabajo"],
+    sounds: ["しき"],
+  },
+  {
+    char: "誓",
+    etimology: ["hacha", "palabra"],
+    sounds: ["ちかう", "せい"],
+  },
+  {
+    char: "永",
+    etimology: ["gota", "agua"],
+    sounds: ["ながい", "えい"],
+  },
+  {
+    char: "涙",
+    etimology: ["agua", "desolación"],
+    sounds: ["なみだ", "るい"],
+  },
+  {
+    char: "場",
+    etimology: ["tierra", "sol", "sangre"],
+    sounds: ["ば", "じょう"],
+  },
+  {
+    char: "顔",
+    etimology: ["antena", "cabeza"],
+    sounds: ["かお", "がん"],
+  },
+  {
+    char: "覆",
+    etimology: ["cubrir", "reverso", "camino"],
+    sounds: ["おおう", "くつがえる", "ふく"],
+  },
+  {
+    char: "謝",
+    etimology: ["palabra", "vientre", "pulgada"],
+    sounds: ["あやまる", "しゃ"],
+  },
+  {
+    char: "告",
+    etimology: ["buey", "boca"],
+    sounds: ["つげる", "こく"],
+  },
+  {
+    char: "娘",
+    etimology: ["mujer", "bueno"],
+    sounds: ["むすめ", "じょう"],
+  },
+  {
+    char: "者",
+    etimology: ["viejo con cabello largo", "sol"],
+    sounds: ["もの", "しゃ"],
+  },
 ];
 
 console.log("total kanjis: ", kanjiBase.length);
