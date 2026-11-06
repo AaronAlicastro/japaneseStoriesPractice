@@ -34,6 +34,7 @@ export default function StoriesHandler({ change, dataBase }) {
         {stories.map((story) => (
           <Cards
             key={story.id}
+            dataBase={dataBase}
             title={story.title}
             comment={story.comment}
             click={() => selectStory(story)}

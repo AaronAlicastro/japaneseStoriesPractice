@@ -12,15 +12,10 @@ export default class DataBase {
     }
 
     this.stories = [];
-    const request = window.indexedDB.open("JapaneseStudies", 2);
+    const request = window.indexedDB.open("JapaneseStudies", 3);
 
     request.onupgradeneeded = (event) => {
       const initDB = event.target.result;
-
-      if (initDB.objectStoreNames.contains("words")) {
-        initDB.deleteObjectStore("words");
-        window.alert("Reinicio de palabras");
-      }
 
       if (!initDB.objectStoreNames.contains("stories")) {
         initDB.createObjectStore("stories", {
@@ -30,11 +25,14 @@ export default class DataBase {
         initDB.createObjectStore("kanjiLearned", {
           keyPath: "char",
         });
+        initDB.createObjectStore("words", {
+          keyPath: "word",
+        });
       }
 
-      window.alert("Creando esquema de palabras nuevamente");
-      const wordStore = initDB.createObjectStore("words", {
-        keyPath: "word",
+      window.alert("Creando progreso");
+      initDB.createObjectStore("progress", {
+        keyPath: "referenceTitle",
       });
     };
 
@@ -62,6 +60,13 @@ export default class DataBase {
       char: json.char,
       strokes: json.strokes || [],
       important: json.important || true,
+    };
+  }
+  progressSchema(json) {
+    return {
+      referenceTitle: json.referenceTitle,
+      totalBlocks: json.totalBlocks,
+      indexes: json.indexes || [],
     };
   }
 
@@ -107,10 +112,50 @@ export default class DataBase {
       res(suzume.analyze(block));
     };
 
+    const progress = {
+      referenceTitle: story.title,
+      totalBlocks: blocks["totalBlocks"],
+      indexes: [],
+    };
+    const blockSecuence = {
+      firstTime: true,
+      lastIndex: -1,
+    };
+    const saveProgress = () => {
+      progress.indexes.push(blockSecuence.lastIndex);
+      save.recordProgress(progress);
+    };
+
+    save.findProgress(story.title, (pross) => {
+      if (pross) progress.indexes = pross.indexes;
+    });
+
+    const getAlea = () => {
+      if (blocks.length) {
+        const alea = Math.floor(Math.random() * blocks.length);
+
+        if (progress.indexes.includes(blocks[alea].id)) {
+          blocks.splice(alea, 1);
+          return getAlea();
+        }
+
+        return blocks.splice(alea, 1)[0];
+      }
+
+      return null;
+    };
+
     save.currentPracticeBlock = (callback) => {
-      if (!blocks.length) return false;
-      const alea = Math.floor(Math.random() * blocks.length);
-      save.currentBlockSelected = blocks.splice(alea, 1)[0];
+      const aleaTried = getAlea();
+
+      if (!aleaTried) {
+        progress.indexes.splice(0);
+        save.recordProgress(progress);
+        return false;
+      }
+
+      save.currentBlockSelected = aleaTried;
+      if (!blockSecuence.firstTime) saveProgress();
 
       analizeBlock(save.currentBlockSelected.origin, (morphemes) => {
         save.currentMorphemes = morphemes.filter((mr) => {
@@ -129,6 +174,8 @@ export default class DataBase {
         callback();
       });
 
+      blockSecuence.firstTime = false;
+      blockSecuence.lastIndex = save.currentBlockSelected.id;
       return true;
     };
   }
@@ -185,7 +232,6 @@ export default class DataBase {
 
   // words
   recordWord(word, callback = () => {}) {
-    // const save = this;
     const wordJson = this.wordSchema(word);
     const wordTransaction = dbCreated.transaction(["words"], "readwrite");
     const wordStore = wordTransaction.objectStore("words");
@@ -196,5 +242,19 @@ export default class DataBase {
     const wordTransaction = dbCreated.transaction(["words"], "readonly");
     const wordStore = wordTransaction.objectStore("words");
     wordStore.get(word).onsuccess = (e) => callback(e.target.result);
+  }
+
+  // progress
+  recordProgress(progress, callback = () => {}) {
+    const progressJson = this.progressSchema(progress);
+    const proTransaction = dbCreated.transaction(["progress"], "readwrite");
+    const progressStore = proTransaction.objectStore("progress");
+    progressStore.put(progressJson).onsuccess = () => callback();
+  }
+
+  findProgress(reference, callback) {
+    const proTransaction = dbCreated.transaction(["progress"], "readonly");
+    const progressStore = proTransaction.objectStore("progress");
+    progressStore.get(reference).onsuccess = (e) => callback(e.target.result);
   }
 }

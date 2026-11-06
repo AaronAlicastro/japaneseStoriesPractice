@@ -25,7 +25,7 @@ export default function clearSplitStory(story = "") {
       }
     }
 
-    blocks.push({ origin, onlyKanjis });
+    blocks.push({ origin, onlyKanjis, id: blocks.length });
   }
 
   if (unknownKanjis.length) {
@@ -33,6 +33,8 @@ export default function clearSplitStory(story = "") {
       window.alert("Se han copiado los kanjis sin registro en portapapeles");
     });
   }
+
+  blocks["totalBlocks"] = story.length;
 
   return blocks;
 }
