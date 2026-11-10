@@ -1,5 +1,4 @@
-import kanaChar from "./kana";
-import kanjiBase from "./kanjiBase";
+import validateKanji from "./validateKanji";
 
 export default function clearSplitStory(story = "") {
   const blocks = [];
@@ -14,13 +13,13 @@ export default function clearSplitStory(story = "") {
 
     for (let i = 0; i < origin.length; i++) {
       const char = origin.charAt(i);
+      const { exists, registered } = validateKanji(char);
 
-      if (!kanaChar.includes(char)) {
-        if (!onlyKanjis.includes(char)) {
-          onlyKanjis.push(char);
+      if (exists && !onlyKanjis.includes(char)) {
+        onlyKanjis.push(char);
 
-          const registered = kanjiBase.find((k) => k.char === char);
-          if (!registered) unknownKanjis.push(char);
+        if (!registered && !unknownKanjis.includes(char)) {
+          unknownKanjis.push(char);
         }
       }
     }

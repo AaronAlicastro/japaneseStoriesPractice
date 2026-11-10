@@ -1,6 +1,6 @@
 import kanaChar from "./kana";
 
-export default class morphemeWordsCreator {
+export default class MorphemeWordsCreator {
   constructor(morphemes = []) {
     let kanjiNotFound = true;
 

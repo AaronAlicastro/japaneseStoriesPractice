@@ -1,7 +1,6 @@
 import { Suzume } from "https://cdn.jsdelivr.net/npm/@libraz/suzume/dist/index.js";
 import clearSplitStory from "./clearSplitStory";
-import findNextKanji from "./findNextKanji";
-import morphemeWordsCreator from "./morphemeWordsCreator";
+import MorphemeWordsCreator from "./MorphemeWordsCreator";
 
 let dbCreated = null;
 
@@ -182,19 +181,17 @@ export default class DataBase {
 
   createBlockSentence() {
     const save = this;
-    const morphemeWords = new morphemeWordsCreator(this.currentMorphemes);
+    const morphemeWords = new MorphemeWordsCreator(this.currentMorphemes);
 
     return () => {
       const origin = save.currentBlockSelected.origin + "";
       const kanji = save.currentBlockSelected.onlyKanjis.shift();
-
-      const { text, noFound } = findNextKanji(origin, kanji);
       morphemeWords.validate(kanji);
 
       return {
-        noFound,
+        noFound: kanji ? false : true,
         kanji,
-        text,
+        text: kanji ? origin.replace(kanji, " -- ") : null,
         origin,
         wordDetected: morphemeWords.found,
       };
